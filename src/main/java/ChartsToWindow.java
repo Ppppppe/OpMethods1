@@ -9,8 +9,7 @@ import org.jzy3d.plot3d.primitives.ConcurrentLineStrip;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class ChartsToWindow {
     private List<Chart> charts;
@@ -29,19 +28,29 @@ public class ChartsToWindow {
         ConcurrentLineStrip lineStrip;
         double xmin;
         double xmax;
+        double xmid;
         double yOfXmin;
         double yOfXmax;
+        double yOfXmid;
         double ymin;
         double ymax;
+        double absymax;
 
         for (int i = 0; i < functions.size(); i++) {
             chart = new Chart2d();
             xmin = functions.get(i).getXmin();
             xmax = functions.get(i).getXmax();
+            xmid = (xmax + xmin) / 2.0;
             yOfXmin = functions.get(i).compute(xmin);
             yOfXmax = functions.get(i).compute(xmax);
-            ymin = min(yOfXmin, yOfXmax) - 1.0;
-            ymax = max(yOfXmin, yOfXmax) + 1.0;
+            yOfXmid = functions.get(i).compute(xmid);
+            ymax = max(yOfXmin, yOfXmax);
+            ymax = max(ymax, yOfXmid);
+            ymin = min(yOfXmin, yOfXmax);
+            ymin = min(ymin, yOfXmid);
+            absymax = max(abs(ymax), abs(ymin));
+            ymax += absymax / 5.0;
+            ymin -= absymax / 10.0;
             chart.getView().setBoundManual(new BoundingBox3d((float) xmin, (float) xmax, (float) ymin, (float) ymax, -1.0F, 1.0F));
             //chart.add();
             charts.add(chart);

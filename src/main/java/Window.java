@@ -19,7 +19,7 @@ public class Window extends JFrame {
     public Window(List<Chart> charts) throws IOException {
         LookAndFeel.apply();
         String lines = "[400px]";
-        String columns = "[400px,grow]"; // width
+        String columns = "[200px,grow]"; // width
         setLayout(new MigLayout("", columns, lines));
         int k = 0;
         for (Chart c : charts) {
@@ -50,24 +50,20 @@ public class Window extends JFrame {
         });
     }
 
-    public static void generateSamples(ChartsToWindow log, int numOfIterations)
+    public static void generateSamplesForFunctions(ChartsToWindow log, int n)
             throws InterruptedException {
-        System.out.println("will generate " + numOfIterations + " samples");
-            // Add to time series
-            //j = i / 100.0F;
-            //log.getSerie2d(0).add(j, sin(j));
-            //log.getSerie2d(1).add(j, cos(j));
-            //log.getSerie2d(2).add(j, pow(j, 2) + 3*j - 2);
 
+        int numOfIterations;
         double step;
         double Xcurr;
             for (int k = 0; k < log.getFunctions().size(); k++) {
-                log.getFunction(k);
+                //log.getFunction(k);
+                numOfIterations = log.getFunction(k).getNumOfIterations();
                 Xcurr = log.getFunction(k).getXmin();
                 step =
                         (log.getFunction(k).getXmax() - log.getFunction(k).getXmin())
                         //---------------------------------------------------------//
-                                            /numOfIterations;
+                                /log.getFunction(k).getNumOfIterations();
 
                 for (int i = 0; i < numOfIterations; i++) {
                     log.getSerie2d(k).add(Xcurr, log.getFunction(k).compute(Xcurr));
@@ -75,4 +71,6 @@ public class Window extends JFrame {
                 }
             }
     }
+
+
 }

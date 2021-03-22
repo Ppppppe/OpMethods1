@@ -2,5 +2,7 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface Method {
 
-    double apply(ExtendedFunction fn);
+    double eps = 0.001;
+
+    OutputMethodInf apply(ExtendedFunction fn);
 }
